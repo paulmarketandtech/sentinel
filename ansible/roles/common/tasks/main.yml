@@ -1,0 +1,36 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all packages
+  apt:
+    upgrade: dist
+
+- name: Install base packages
+  apt:
+    name:
+      - curl
+      - git
+      - vim
+      - htop
+      - net-tools
+      - unzip
+      - qemu-guest-agent
+    state: present
+
+- name: Set timezone
+  timezone:
+    name: Europe/Warsaw
+
+- name: Ensure SSH host keys exist
+  command: ssh-keygen -A
+  args:
+    creates: /etc/ssh/ssh_host_ed25519_key
+
+- name: Enable qemu-guest-agent
+  systemd:
+    name: qemu-guest-agent
+    enabled: yes
+    state: started

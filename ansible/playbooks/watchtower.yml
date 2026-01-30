@@ -1,0 +1,6 @@
+---
+- name: Configure Watchtower
+  hosts: watchtower
+  become: yes
+  roles:
+    - common
