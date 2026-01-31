@@ -1,0 +1,80 @@
+---
+- name: Install Docker dependencies
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+
+- name: Add Docker GPG key
+  shell: |
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  args:
+    creates: /usr/share/keyrings/docker-archive-keyring.gpg
+
+- name: Add Docker repository
+  shell: |
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+  args:
+    creates: /etc/apt/sources.list.d/docker.list
+
+- name: Install Docker
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
+    state: present
+    update_cache: yes
+
+- name: Start and enable Docker
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add user to docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+
+- name: Stop systemd-resolved
+  systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: no
+
+- name: Remove resolv.conf symlink
+  file:
+    path: /etc/resolv.conf
+    state: absent
+
+- name: Create static resolv.conf
+  copy:
+    content: |
+      nameserver 1.1.1.1
+      nameserver 8.8.8.8
+    dest: /etc/resolv.conf
+    mode: '0644'
+
+- name: Create Pi-hole directory
+  file:
+    path: /opt/pihole
+    state: directory
+    mode: '0755'
+
+- name: Create Pi-hole docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/pihole/docker-compose.yml
+    mode: '0644'
+
+- name: Start Pi-hole
+  shell: docker compose up -d
+  args:
+    chdir: /opt/pihole

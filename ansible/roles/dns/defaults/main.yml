@@ -1,0 +1,4 @@
+---
+pihole_password: "changeme"
+pihole_dns_upstream: "1.1.1.1;8.8.8.8"
+pihole_timezone: "Europe/Warsaw"
