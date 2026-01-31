@@ -1,0 +1,35 @@
+---
+- name: Create WireGuard directory
+  file:
+    path: /opt/wireguard
+    state: directory
+    mode: '0755'
+
+- name: Create docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/wireguard/docker-compose.yml
+    mode: '0644'
+
+- name: Start WireGuard
+  shell: docker compose up -d
+  args:
+    chdir: /opt/wireguard
+
+- name: Wait for WireGuard to generate configs
+  pause:
+    seconds: 10
+
+- name: Get peer QR code
+  shell: docker exec wireguard cat /config/peer1/peer1.png | base64
+  register: qr_code_base64
+  changed_when: false
+
+- name: Get peer config
+  shell: docker exec wireguard cat /config/peer1/peer1.conf
+  register: peer_config
+  changed_when: false
+
+- name: Display peer config
+  debug:
+    msg: "{{ peer_config.stdout_lines }}"

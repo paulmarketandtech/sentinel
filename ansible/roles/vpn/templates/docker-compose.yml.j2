@@ -1,0 +1,25 @@
+services:
+  wireguard:
+    container_name: wireguard
+    image: linuxserver/wireguard:latest
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Warsaw
+      - SERVERURL=auto
+      - SERVERPORT={{ wireguard_port }}
+      - PEERS=1
+      - PEERDNS={{ wireguard_dns }}
+      - INTERNAL_SUBNET={{ wireguard_network }}
+      - ALLOWEDIPS={{ wireguard_allowed_ips }}
+    volumes:
+      - /opt/wireguard/config:/config
+      - /lib/modules:/lib/modules:ro
+    ports:
+      - "{{ wireguard_port }}:{{ wireguard_port }}/udp"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
