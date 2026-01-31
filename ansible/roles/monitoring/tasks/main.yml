@@ -1,0 +1,36 @@
+---
+- name: Create monitoring directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /opt/monitoring
+    - /opt/monitoring/prometheus
+    - /opt/monitoring/grafana
+    - /opt/monitoring/uptime-kuma
+
+- name: Set Grafana directory ownership
+  file:
+    path: /opt/monitoring/grafana
+    owner: 472
+    group: 472
+    mode: '0755'
+    recurse: yes
+
+- name: Create Prometheus config
+  template:
+    src: prometheus.yml.j2
+    dest: /opt/monitoring/prometheus/prometheus.yml
+    mode: '0644'
+
+- name: Create docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/monitoring/docker-compose.yml
+    mode: '0644'
+
+- name: Start monitoring stack
+  shell: docker compose up -d
+  args:
+    chdir: /opt/monitoring
