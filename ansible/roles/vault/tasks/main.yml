@@ -1,0 +1,35 @@
+---
+- name: Create Vault directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /opt/vault
+    - "{{ vault_data_dir }}"
+    - "{{ vault_config_dir }}"
+
+- name: Set Vault data directory ownership
+  file:
+    path: "{{ vault_data_dir }}"
+    owner: 100
+    group: 1000
+    mode: '0755'
+    recurse: yes
+
+- name: Create Vault docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/vault/docker-compose.yml
+    mode: '0644'
+
+- name: Create Vault config
+  template:
+    src: vault.hcl.j2
+    dest: "{{ vault_config_dir }}/vault.hcl"
+    mode: '0644'
+
+- name: Start Vault
+  shell: docker compose up -d
+  args:
+    chdir: /opt/vault

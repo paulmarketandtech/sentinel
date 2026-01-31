@@ -1,0 +1,15 @@
+services:
+  vault:
+    container_name: vault
+    image: hashicorp/vault:{{ vault_version }}
+    restart: unless-stopped
+    ports:
+      - "{{ vault_port }}:8200"
+    environment:
+      VAULT_ADDR: 'http://127.0.0.1:8200'
+    volumes:
+      - '{{ vault_data_dir }}:/vault/data'
+      - '{{ vault_config_dir }}:/vault/config'
+    cap_add:
+      - IPC_LOCK
+    command: server
