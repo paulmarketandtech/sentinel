@@ -17,8 +17,20 @@
       - htop
       - net-tools
       - unzip
-      - qemu-guest-agent
     state: present
+
+- name: Install qemu-guest-agent (VM only)
+  apt:
+    name: qemu-guest-agent
+    state: present
+  when: ansible_virtualization_role == "guest"
+
+- name: Enable qemu-guest-agent (VM only)
+  systemd:
+    name: qemu-guest-agent
+    enabled: yes
+    state: started
+  when: ansible_virtualization_role == "guest"
 
 - name: Set timezone
   timezone:
@@ -28,9 +40,3 @@
   command: ssh-keygen -A
   args:
     creates: /etc/ssh/ssh_host_ed25519_key
-
-- name: Enable qemu-guest-agent
-  systemd:
-    name: qemu-guest-agent
-    enabled: yes
-    state: started
