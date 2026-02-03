@@ -17,6 +17,9 @@ ansible-playbook -i inventory/production.yml playbooks/watchtower.yml
 
 Architecture
 
+```
+```
+```
 ┌─────────────────────────────────────────────────────────────┐
 │                        HOME NETWORK                         │
 │                                                             │
@@ -53,6 +56,9 @@ Architecture
                                ▼
                            INTERNET
                         (secure access)
+```
+
+
 
 Services
 Service	Port	Purpose
@@ -92,6 +98,9 @@ Uptime Kuma	http://YOUR_IP:3001
 
 
 Project Structure
+
+```
+```
 sentinel/
 ├── ansible/
 │   ├── ansible.cfg
@@ -112,6 +121,9 @@ sentinel/
 │   └── setup/
 │       └── watchtower.md
 └── README.md 
+```
+```
+
 
 Development Workflow
 1. Make changes to roles
@@ -127,11 +139,16 @@ Docker	Container runtime
 Ubuntu Server	Base OS
 
 Roadmap
+```
+```
 [x] Core infrastructure (DNS, VPN, Monitoring, Vault)
 [] Automated backups
 [] Terraform for Proxmox VM provisioning
 [] GitHub Actions CI/CD
 [] Ansible Vault for secrets encryption
+```
+```
+
 
 Lessons Learned
 See decisions.md for detailed reasoning behind technical choices.
