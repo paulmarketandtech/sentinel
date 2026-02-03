@@ -101,6 +101,7 @@ Project Structure
 
 ```
 ```
+```
 sentinel/
 ├── ansible/
 │   ├── ansible.cfg
@@ -122,7 +123,6 @@ sentinel/
 │       └── watchtower.md
 └── README.md 
 ```
-```
 
 
 Development Workflow
@@ -140,13 +140,11 @@ Ubuntu Server	Base OS
 
 Roadmap
 ```
-```
 [x] Core infrastructure (DNS, VPN, Monitoring, Vault)
 [] Automated backups
 [] Terraform for Proxmox VM provisioning
 [] GitHub Actions CI/CD
 [] Ansible Vault for secrets encryption
-```
 ```
 
 
