@@ -18,8 +18,6 @@ ansible-playbook -i inventory/production.yml playbooks/watchtower.yml
 Architecture
 
 ```
-```
-```
 ┌─────────────────────────────────────────────────────────────┐
 │                        HOME NETWORK                         │
 │                                                             │
@@ -77,15 +75,20 @@ Prerequisites
 
 Deploy
 # Clone repo
+```
 git clone https://github.com/paulmarketandtech/sentinel.git
 cd sentinel/ansible
+```
 
 # Update inventory with your server IP
+```
 vim inventory/production.yml
+```
 
 # Run
+```
 ansible-playbook -i inventory/production.yml playbooks/watchtower.yml
-
+```
 
 Access Services
 After deployment:
@@ -99,8 +102,6 @@ Uptime Kuma	http://YOUR_IP:3001
 
 Project Structure
 
-```
-```
 ```
 sentinel/
 ├── ansible/

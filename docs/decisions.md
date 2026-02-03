@@ -87,11 +87,14 @@ Easy choice.
 
 **Decision:** Role-based structure with separation.
 
+```
 roles/
 ├── common/ # shared setup
 ├── dns/ # Pi-hole only
 ├── vpn/ # WireGuard only
 └── monitoring/ # all monitoring together 
+```
+
 
 **Why separate:**
 - Can disable individual services

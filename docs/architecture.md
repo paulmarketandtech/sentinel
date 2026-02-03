@@ -10,7 +10,7 @@ Sentinel consists of two main components:
 This document focuses on Watchtower.
 
 ## Network Topology 
-
+```
          Internet
             │
   UDP 51820 (port forward)
@@ -28,6 +28,7 @@ This document focuses on Watchtower.
 │         │ │     Pi      │ │   Proxmox   │
 │  .0.71  │ │   .0.200    │ │    .0.25    │
 └─────────┘ └─────────────┘ └─────────────┘
+```
 
 ## Watchtower Components
 
@@ -35,6 +36,7 @@ This document focuses on Watchtower.
 
 All services run in Docker containers:
 
+```
 Docker Host (Watchtower)
 │
 ├── pihole (DNS)
@@ -58,25 +60,29 @@ Docker Host (Watchtower)
 │
 └── node-exporter (system metrics)
 └── port 9100 
+```
 
 ### Data Flow
 
 **DNS Resolution:**
-
+```
 Client ──> Pi-hole ──> Upstream DNS (Cloudflare/Google)
 │
 └── blocks ads/trackers 
+```
 
 **VPN Access:**
-
+```
 Phone (outside) ──> Router:51820 ──> WireGuard ──> Home Network
 │
 └── uses Pi-hole for DNS 
+```
 
 **Monitoring:**
-
+```
 Node Exporter ──> Prometheus ──> Grafana
 (collects) (stores) (displays) 
+```
 
 ## Data Persistence
 
